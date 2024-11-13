@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   backend:
@@ -6,35 +6,32 @@ services:
       context: ./rails-backend
       dockerfile: Dockerfile
     ports:
-      - "3001:80" # O Rails no container está configurado para a porta 80
-    environment:
-      RAILS_ENV: development
-      BUNDLE_PATH: /usr/local/bundle
-      DATABASE_URL: postgres://user:password@db:5432/mydatabase
+      - "3001:3000"
     volumes:
-      - ./rails-backend:/rails # Sincronize o código local
-    depends_on:
-      - db
+      - ./rails-backend:/rails
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://postgres:password@db:5432/app_development
 
   frontend:
     build:
       context: ./nextjs-frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000" # Porta padrão para o Next.js
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3001 # Endereço do backend
+      - "3000:3000"
     volumes:
-      - ./nextjs-frontend:/app # Sincronize o código local
+      - ./nextjs-frontend:/app
+    environment:
+      - NODE_ENV=development
 
   db:
     image: postgres:15
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: app_development
     volumes:
       - pgdata:/var/lib/postgresql/data
 
