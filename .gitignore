@@ -1,0 +1,6 @@
+/rails-backend/tmp
+/rails-backend/log
+/rails-backend/.bundle
+/nextjs-frontend/node_modules
+pgdata
+.env

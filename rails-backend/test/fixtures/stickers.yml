@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  album: one
+  user: one
+  status: MyString
+
+two:
+  name: MyString
+  album: two
+  user: two
+  status: MyString
