@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*", // Todas as chamadas para /api
-        destination: "http://localhost:3000/:path*", // Redireciona para o servidor Rails
+        destination: "http://backend:3000/:path*", // Redireciona para o servidor Rails
       },
     ];
   },

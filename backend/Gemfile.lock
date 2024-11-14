@@ -162,6 +162,7 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.9)
     psych (5.2.0)
       stringio
     puma (6.4.3)
@@ -296,6 +297,7 @@ DEPENDENCIES
   debug
   jwt
   kamal
+  pg (~> 1.4)
   puma (>= 5.0)
   rack-cors
   rails (~> 8.0.0)
