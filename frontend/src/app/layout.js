@@ -1,8 +1,6 @@
 import localFont from "next/font/local";
 import Link from "next/link";
 
-import "./globals.css"; // ou './index.css', dependendo do seu projeto
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -25,7 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="border-orange-400">
+        <header>
           <nav>
             <Link href="/">Home</Link>
             <Link href="/login">Login</Link>
