@@ -3,8 +3,22 @@
 import { useEffect, useState } from "react";
 import api from "./services/api";
 
+function AlbumList({ albums }) {
+  return (
+    <ul>
+      {albums.map((album) => (
+        <li key={album.id} className="p-4 border-b border-gray-200">
+          <h2 className="text-xl font-semibold">{album.title}</h2>
+          <p className="text-gray-500">{album.description}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function Home() {
   const [albums, setAlbums] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -13,64 +27,38 @@ export default function Home() {
         const response = await api.get("/albums");
         setAlbums(response.data);
       } catch (error) {
-        if (error.response && error.response.data.errors) {
-          setError(`Erro: ${error.response.data.errors.join(", ")}`);
-        } else {
-          setError("Erro ao buscar álbuns. Tente novamente.");
-        }
+        setError(
+          error.response?.data?.errors?.join(", ") || "Erro ao buscar álbuns."
+        );
+      } finally {
+        setLoading(false);
       }
     }
     fetchAlbums();
   }, []);
 
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen text-center">
-        <img
-          src="/error-illustration.svg"
-          alt="Erro ao carregar dados"
-          className="w-1/3 mb-4"
-        />
-        <h1 className="text-xl font-bold text-red-500">Algo deu errado</h1>
-        <p className="text-gray-500">{error}</p>
-        <button
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          onClick={() => window.location.reload()}
-        >
-          Tentar Novamente
-        </button>
-      </div>
-    );
-  }
+  if (loading) return <div className="text-center p-4">Carregando...</div>;
 
-  if (albums.length === 0) {
+  if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
+
+  if (albums.length === 0)
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-center">
-        <img
-          src="/empty-albums-illustration.svg"
-          alt="Nenhum álbum disponível"
-          className="w-1/3 mb-4"
-        />
-        <h1 className="text-xl font-bold">Nenhum álbum disponível</h1>
+      <div className="text-center p-4">
+        <h1 className="text-xl font-semibold bg-indigo-500 text-white">
+          Nenhum álbum encontrado
+        </h1>
         <p className="text-gray-500">
-          Parece que ainda não há álbuns. Tente novamente mais tarde ou adicione
-          novos álbuns.
+          Parece que não há álbuns disponíveis no momento.
         </p>
       </div>
     );
-  }
 
   return (
-    <div>
-      <h1>Álbuns Disponíveis</h1>
-      <ul>
-        {albums.map((album) => (
-          <li key={album.id}>
-            <h2>{album.title}</h2>
-            <p>{album.description}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="max-w-4xl mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">
+        Álbuns Disponíveis
+      </h1>
+      <AlbumList albums={albums} />
     </div>
   );
 }
